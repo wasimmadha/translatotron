@@ -48,7 +48,7 @@ def create_hparams(hparams_string=None,verbose=False):
     #Data parameters
     "input_data_root": r'C:\Users\Wasim\DubbingProject\Speech2Speech\google_research\translatotron\data\prepared_data\source\train',
     "output_data_root": r'C:\Users\Wasim\DubbingProject\Speech2Speech\google_research\translatotron\data\prepared_data\source\train',
-    "train_size": 0.99,
+    "train_size": 0.75,
     #Output Audio Parameters
     "out_channels":1025,
     ################################

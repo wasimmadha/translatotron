@@ -83,9 +83,14 @@ def prepare_dataloaders(hparams):
 
     # print(len(input_files),len(output_files))
     input_files,output_files = input_files[:int(len(input_files)/2)],output_files[:int(len(input_files)/2)]
+    print(len(input_files), len(output_files))
     train_size = int(hparams.train_size*len(input_files))
     trainset = (input_files[:train_size],output_files[:train_size])
     valset = (input_files[train_size:],output_files[train_size:])
+
+    print("Total training length: ",len(trainset[0]))
+    print("Total validation length: ",len(valset[0]))
+
     # trainset = TextMelLoader(hparams.training_files, hparams)
     # valset = TextMelLoader(hparams.validation_files, hparams)
     trainset = TextMelLoader(trainset, hparams)
