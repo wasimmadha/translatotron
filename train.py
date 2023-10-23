@@ -177,20 +177,22 @@ def validate(output_directory,model, criterion, valset, iteration, batch_size, n
 
         val_loss = 0.0
         for i, batch in enumerate(val_loader):
+                
             x, y = model.parse_batch(batch)
             y_pred = model(x)
             out_sig = y_pred[1].detach().cpu().numpy()
             # print(out_sig.shape)
-            # for j in range(4):
-            #   print(f"Saving figure: {j}")
-            #   plt.figure()
-            #   # librosa.display.specshow(librosa.power_to_db(S, ref=np.max),ax=ax)
-            #   plt.imshow(out_sig[j])
-            #   plt.colorbar()
-            #   # plt.show()
-            #   plt.savefig(os.path.join(output_directory,f'plot_{iteration}_{j}.png'))
-            #   # out_ = librosa.feature.inverse.mel_to_audio(out_sig[j])
-            #   # sf.write(os.path.join(output_directory,f"out_{iteration}.wav"),out_,22050)
+            if i < 4:
+                for j in range(1):
+                    print(f"Saving figure: {j}")
+                    plt.figure()
+                    # librosa.display.specshow(librosa.power_to_db(S, ref=np.max),ax=ax)
+                    plt.imshow(out_sig[j])
+                    plt.colorbar()
+                    # plt.show()
+                    plt.savefig(os.path.join(output_directory,f'plot_{iteration}_{j}.png'))
+                    # out_ = librosa.feature.inverse.mel_to_audio(out_sig[j])
+                    # sf.write(os.path.join(output_directory,f"out_{iteration}.wav"),out_,22050)
 
             loss = criterion(y_pred, y)
             if distributed_run:
@@ -203,7 +205,7 @@ def validate(output_directory,model, criterion, valset, iteration, batch_size, n
     model.train()
     if rank == 0:
         print("Validation loss {}: {:9f}  ".format(iteration, val_loss))
-        logger.log_validation(val_loss, model, y, y_pred, iteration)
+        # logger.log_validation(val_loss, model, y, y_pred, iteration)
 
 
 def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
@@ -311,18 +313,18 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 duration = time.perf_counter() - start
                 print("Train loss {} {:.6f} Grad Norm {:.6f} {:.2f}s/it".format(
                     iteration, reduced_loss, grad_norm, duration))
-                logger.log_training(
-                    reduced_loss, grad_norm, learning_rate, duration, iteration)
+                # logger.log_training(
+                #     reduced_loss, grad_norm, learning_rate, duration, iteration)
 
             if not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
                 validate(output_directory,model, criterion, valset, iteration,
                          hparams.batch_size, n_gpus, collate_fn, logger,
                          hparams.distributed_run, rank)
-                # if rank == 0:
-                #     checkpoint_path = os.path.join(
-                #         output_directory, "checkpoint_{}".format(iteration))
-                #     save_checkpoint(model, optimizer, learning_rate, iteration,
-                #                     checkpoint_path)
+                if rank == 0:
+                    checkpoint_path = os.path.join(
+                        output_directory, "checkpoint_{}".format(iteration))
+                    save_checkpoint(model, optimizer, learning_rate, iteration,
+                                    checkpoint_path)
 
             iteration += 1
 
