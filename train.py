@@ -66,6 +66,7 @@ def prepare_dataloaders(hparams):
         output_files[i] = os.path.join(hparams.output_data_root,f)
         input_files[i] = os.path.join(hparams.input_data_root,f)
 
+    print(output_files, input_files)
     # print("input")
     # print(len(input_files),len(output_files))
     # for i,x in enumerate(input_files):
@@ -285,6 +286,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             y_pred = model(x)
 
             loss = criterion(y_pred, y)
+            print("Loss is:: ", loss.item())
             if hparams.distributed_run:
                 reduced_loss = reduce_tensor(loss.data, n_gpus).item()
             else:
