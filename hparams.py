@@ -13,7 +13,7 @@ def create_hparams(hparams_string=None,verbose=False):
     ################################
     # Experiment Parameters        #
     ################################
-    "epochs":50,
+    "epochs":2,
     "iters_per_checkpoint":10,
     "seed":1234,
     "dynamic_loss_scaling":True,
@@ -46,8 +46,8 @@ def create_hparams(hparams_string=None,verbose=False):
     "mel_fmax":8000.0,
 
     #Data parameters
-    "input_data_root": '/content/drive/MyDrive/Dubbing Project/data/prepared_data/source/train',
-    "output_data_root": '/content/drive/MyDrive/Dubbing Project/data/prepared_data/target/train',
+    "input_data_root": r'C:\Users\Wasim\DubbingProject\Speech2Speech\google_research\translatotron\data\prepared_data\source\train',
+    "output_data_root": r'C:\Users\Wasim\DubbingProject\Speech2Speech\google_research\translatotron\data\prepared_data\source\train',
     "train_size": 0.99,
     #Output Audio Parameters
     "out_channels":1025,

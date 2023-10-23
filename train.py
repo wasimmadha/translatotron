@@ -181,18 +181,18 @@ def validate(output_directory,model, criterion, valset, iteration, batch_size, n
             x, y = model.parse_batch(batch)
             y_pred = model(x)
             out_sig = y_pred[1].detach().cpu().numpy()
+            print(out_sig.shape)
             # print(out_sig.shape)
             if i < 4:
                 for j in range(1):
                     print(f"Saving figure: {j}")
                     plt.figure()
-                    # librosa.display.specshow(librosa.power_to_db(S, ref=np.max),ax=ax)
                     plt.imshow(out_sig[j])
                     plt.colorbar()
                     # plt.show()
                     plt.savefig(os.path.join(output_directory,f'plot_{iteration}_{j}.png'))
-                    # out_ = librosa.feature.inverse.mel_to_audio(out_sig[j])
-                    # sf.write(os.path.join(output_directory,f"out_{iteration}.wav"),out_,22050)
+                    out_ = librosa.feature.inverse.mel_to_audio(out_sig[j])
+                    sf.write(os.path.join(output_directory,f"out_{iteration}.wav"),out_,22050)
 
             loss = criterion(y_pred, y)
             if distributed_run:
